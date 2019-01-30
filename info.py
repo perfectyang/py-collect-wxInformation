@@ -10,17 +10,15 @@ db = ySql({
      })
 
 def insertData(params):
-    #print('开始插入数据')
+    print('开始插入数据')
     sql = "INSERT INTO article(nick_name, title, url, time) VALUES ('{nick_name}', '{title}', '{url}', '{time}')".format(nick_name=params['nick_name'], title=params["title"], url=params["url"], time=params["time"])
     db.insertData(sql)
 
 def main():
     bot = Bot(cache_path=True, console_qr=True)
     allGroup = bot.groups()
-    #print(allGroup)
-    # 定位公司群
+    # 定位群
     company_group = ensure_one(allGroup.search('筷子前端2018【没高层群】'))
-
     print('开始接收信息-------')
     # 将消息转发到文件传输助手
     @bot.register(company_group, except_self=False)
@@ -40,11 +38,10 @@ def main():
               "url": originData['Url'],
               "time": str(time),
             }
-            #print('datadatadata', data)
             insertData(data)
             msg.forward(bot.file_helper, prefix=time)
         else:
-            #print('不是分享')
+            print()
     # 堵塞线程
     bot.join()
 
